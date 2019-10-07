@@ -18,6 +18,11 @@ int test_pack_rcv( struct sk_buff *skb, struct net_device *dev,
     udph = udp_hdr(skb);
     tcph = tcp_hdr(skb);
     iph = ip_hdr(skb);
+    char * name = skb->dev->name;
+    if (!name)
+        printk("error name\n");
+    else
+        printk("%s\n", name);
     printk( KERN_INFO "packet received with length: %u\n, SO %u DEST %u", skb->len,  udph->source, udph->dest);
     if(!skb_pull(skb, sizeof(skb)))
     {
@@ -38,6 +43,7 @@ int test_pack_rcv( struct sk_buff *skb, struct net_device *dev,
    void *af_packet_priv;
    struct list_head list;
 }; */
+
 #define TEST_PROTO_ID 0x1234
 static struct packet_type test_proto = {
    .type = __constant_htons( ETH_P_ALL ),  // may be: __constant_htons( TEST_PROTO_ID ),
