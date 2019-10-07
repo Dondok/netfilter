@@ -10,15 +10,17 @@
 #include <linux/skbuff.h>
 
 int test_pack_rcv( struct sk_buff *skb, struct net_device *dev,
-                   struct packet_type *pt, struct net_device *odev ) {
-                       struct iphdr *iph;
-                       struct udphdr *udph;
-                       struct tcphdr *tcph;
-udph = udp_hdr(skb);
-tcph = tcp_hdr(skb);
-   iph = ip_hdr(skb);
-   printk( KERN_INFO "packet received with length: %u\n, SO %u DEST %u", skb->len,  udph->source, udph->dest);
-   return skb->len;
+                   struct packet_type *pt, struct net_device *odev )
+{
+    struct iphdr *iph;
+    struct udphdr *udph;
+    struct tcphdr *tcph;
+    udph = udp_hdr(skb);
+    tcph = tcp_hdr(skb);
+    iph = ip_hdr(skb);
+    printk( KERN_INFO "packet received with length: %u\n, SO %u DEST %u", skb->len,  udph->source, udph->dest);
+    skb_pull(skb, sizeof(skb));
+    return skb->len;
 };
 
 /* struct packet_type {
